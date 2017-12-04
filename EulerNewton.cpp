@@ -1,7 +1,7 @@
 #include <iomanip>
 #include <iostream>
  
-typedef double F(double,double);
+typedef double F(double,double);	//Definition of the F type as an array of 2 double
  
 /*
 Approximates y(t) in y'(t)=f(t,y) with y(a)=y0 and
@@ -19,7 +19,8 @@ void euler(F f, double y0, double a, double b, double h)
 }
  
 // Example: Newton's cooling law
-double newtonCoolingLaw(double, double t)
+double newtonCoolingLaw(double, double t)	//The function receives 2 arguments of type double
+						//This is a general form, we only use 1 argument here
 {
     return -0.07 * (t - 20);
 }
