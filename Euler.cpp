@@ -53,5 +53,6 @@ double newtonCoolingLaw(double, double t)	//The function receives 2 arguments of
  
 int main()
 {
-    euler(newtonCoolingLaw, y0, a, b, h);
+	inputdata();
+	euler(newtonCoolingLaw, y0, a, b, h);
 }
