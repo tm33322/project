@@ -35,13 +35,18 @@ t=a..b and the step size h.
 */
 void euler(F f, double y0, double a, double b, double h)
 {
+	ofstream outputfile;
+	outputfile.open("output.dat");
+
     double y = y0;
     for (double t = a; t < b; t += h)
     {
         std::cout << std::fixed << std::setprecision(3) << t << " " << y << "\n";
+	outputfile << t << " " << y << endl;
         y += h * f(t, y);
     }
     std::cout << "done\n";
+	outputfile.close();
 }
  
 // Example: Newton's cooling law
