@@ -49,11 +49,11 @@ void euler(F f, double y0, double a, double b, double h)
 	outputfile.close();
 }
  
-// Example: Newton's cooling law
-double newtonCoolingLaw(double, double t)	//The function receives 2 arguments of type double
+// Example: dy/dt=y
+double newtonCoolingLaw(double t, double y)	//The function receives 2 arguments of type double
 						//This is a general form, we only use 1 argument here
 {
-    return -0.07 * (t - 20);
+    return y;
 }
  
 int main()
