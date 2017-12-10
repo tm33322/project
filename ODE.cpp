@@ -2,6 +2,33 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_odeiv2.h>
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+//declaration of the initial and final X values, initial Y value and step
+double X0, Xf, Y0, H;
+
+//Reads the input values from a file
+void ReadInput()
+{
+        double r, R[4];
+        int i=0;
+
+        ifstream infile("input.dat");
+
+        while (infile >> r)
+        {
+                R[i]=r;
+                i++;
+        }
+
+        X0=R[0];
+        Xf=R[1];
+        Y0=R[2];
+        H=R[3];
+
+}
 
 int odefunc (double x, const double y[], double f[], void *params)
 {
@@ -40,4 +67,3 @@ int main ()
     gsl_odeiv2_driver_free (d);
     return 0;
 }
-
