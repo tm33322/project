@@ -15,7 +15,7 @@ void ReadInput()
         double r, R[4];
         int i=0;
 
-        ifstream infile("input.dat");
+        ifstream infile("input");
 
         while (infile >> r)
         {
@@ -39,20 +39,20 @@ int odefunc (double x, const double y[], double f[], void *params)
 
 int * jac;
 
-int main ()
+void OdeSolve(double x0, double xf, double y0, double h)
 {
     int dim =1;
     gsl_odeiv2_system sys = {odefunc, NULL, dim, NULL};
 
     gsl_odeiv2_driver * d = gsl_odeiv2_driver_alloc_y_new (&sys, gsl_odeiv2_step_rkf45, 1e-6, 1e-6, 0.0);
     int i;
-    double x0 = 0.0,  xf = 1.0; /* start and end of integration interval */
+   // double x0 = 0.0,  xf = 1.0; /* start and end of integration interval */
     double x = x0;
     double y[1] = { 1.0  };  /* initial value */
 
-    for (i = 1; i <= 100; i++)
+    for (i = 1; i <= h; i++)
     {
-        double xi = x0 + i * (xf-x0) / 100.0;
+        double xi = x0 + i * (xf-x0) / h;
         int status = gsl_odeiv2_driver_apply (d, &x, xi, y);
 
         if (status != GSL_SUCCESS)
@@ -65,5 +65,14 @@ int main ()
     }
 
     gsl_odeiv2_driver_free (d);
-    return 0;
+
+}
+
+
+int main ()
+{
+        ReadInput();
+        OdeSolve(X0, Xf, Y0, H);
+
+   return 0;
 }
