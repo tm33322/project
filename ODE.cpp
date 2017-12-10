@@ -50,6 +50,9 @@ void OdeSolve(double x0, double xf, double y0, double h)
     double x = x0;
     double y[1] = { 1.0  };  /* initial value */
 
+    ofstream outputfile;
+    outputfile.open("output");
+
     for (i = 1; i <= h; i++)
     {
         double xi = x0 + i * (xf-x0) / h;
@@ -57,11 +60,13 @@ void OdeSolve(double x0, double xf, double y0, double h)
 
         if (status != GSL_SUCCESS)
         {
-            printf ("error, return value=%d\n", status);
+            outputfile << "error, return value = " << status << endl;
+            //printf ("error, return value=%d\n", status);
             break;
         }
 
-        printf ("%.8e %.8e\n", x, y[0]);
+       outputfile << x << " " << y[0] << endl;
+        //printf ("%.8e %.8e\n", x, y[0]);
     }
 
     gsl_odeiv2_driver_free (d);
