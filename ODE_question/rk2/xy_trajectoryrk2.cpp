@@ -7,12 +7,12 @@
 #include <iomanip>
 using namespace std;
 
-double mode, t, t1, h, y[];
+double mode, t, t1, h, y[4];
 
 void ReadInput()
 {
-        double r, R[];
-        int i=0, j=0;
+        double r, R[7];
+        int i=0;
 
         ifstream infile("input");
 
@@ -25,12 +25,14 @@ void ReadInput()
         mode=R[0];
         t=R[1];
         t1=R[2];
+	h=R[3];
 
-        for (j=0, j<=i-3, j++ )
+        for (i=0; i<=3; i++)
         {
-                y[j]=R[j+3];
+                y[i]=R[i+4];
+                //cout << "y" << i << " = " << y[i] << endl;
         }
-
+//cout << "mode = " << mode << " t = " << t << " t1 = " << t1 << " h = " << h << " y0 = " << y[0] << " y1 = " << y[1] << " y2 = " << y[2] << " y3 = " << y[3] << endl;
 }
 
 int
