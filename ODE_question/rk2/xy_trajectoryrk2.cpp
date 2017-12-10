@@ -2,6 +2,36 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_odeiv2.h>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+double mode, t, t1, h, y[];
+
+void ReadInput()
+{
+        double r, R[];
+        int i=0, j=0;
+
+        ifstream infile("input");
+
+        while (infile >> r)
+        {
+                R[i]=r;
+                i++;
+        }
+
+        mode=R[0];
+        t=R[1];
+        t1=R[2];
+
+        for (j=0, j<=i-3, j++ )
+        {
+                y[j]=R[j+3];
+        }
+
+}
 
 int
 func (double t, const double y[], double f[],
@@ -58,12 +88,12 @@ main (void)
     gsl_odeiv2_driver_alloc_y_new (&sys, gsl_odeiv2_step_rk2,
                                   1e-6, 1e-6, 0.0);
   int i;
-  double t = 0.0, t1 = 10.0;
-  double y[4] = { 0.0, 0.0, 20.0, 0.0 };
+  //double t = 0.0, t1 = 10.0;
+  //double y[4] = { 0.0, 0.0, 20.0, 0.0 };
 
-  for (i = 1; i <= 100; i++)
+  for (i = 1; i <= h; i++)
     {
-      double ti = i * t1 / 100.0;
+      double ti = i * t1 / h;
       int status = gsl_odeiv2_driver_apply (d, &t, ti, y);
 
       if (status != GSL_SUCCESS)

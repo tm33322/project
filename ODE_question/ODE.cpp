@@ -4,6 +4,7 @@
 #include <gsl/gsl_odeiv2.h>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 //declaration of the initial and final X values, initial Y value and step
