@@ -81,8 +81,8 @@ jac (double t, const double y[], double *dfdy,
   return GSL_SUCCESS;
 }
 
-int
-main (void)
+
+void Compute ()
 {
   gsl_odeiv2_system sys = {func, jac, 4, NULL};
 
@@ -113,6 +113,14 @@ main (void)
     }
 
   gsl_odeiv2_driver_free (d);
+
+}
+
+int main()
+{
+  ReadInput();
+  Compute();
+
   return 0;
 }
 
