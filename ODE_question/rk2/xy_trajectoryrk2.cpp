@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <ctime>
 using namespace std;
 
 double mode, t, t1, h, y[4], order;
@@ -133,8 +134,13 @@ int
 main ()
 {
 
+  clock_t c1=clock();
+
   ReadInput();
   Compute();
+
+  c1 = clock() - c1;
+  cout << "execution time is " << c1/(double)CLOCKS_PER_SEC << " seconds" << endl;
 
   return 0;
 }

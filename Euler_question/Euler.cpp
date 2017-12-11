@@ -1,6 +1,7 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 using namespace std;
  
 typedef double F(double,double);	//Definition of the F type as an array of 2 double
@@ -50,14 +51,20 @@ void euler(F f, double y0, double a, double b, double h)
 }
  
 // Example: dy/dt=y
-double newtonCoolingLaw(double t, double y)	//The function receives 2 arguments of type double
-						//This is a general form, we only use 1 argument here
+double func(double t, double y)		//The function receives 2 arguments of type double
+					//This is a general form, we only use 1 argument here
 {
     return y;
 }
  
 int main()
 {
+  	clock_t c1=clock();
+	
 	inputdata();
-	euler(newtonCoolingLaw, y0, a, b, h);
+	euler(func, y0, a, b, h);
+
+	c1 = clock() - c1; 
+  	cout << "execution time is " << c1/(double)CLOCKS_PER_SEC << " seconds" << endl;
+
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <ctime>
 using namespace std;
 
 //declaration of the initial and final X values, initial Y value and step
@@ -77,8 +78,13 @@ void OdeSolve(double x0, double xf, double y0, double h)
 
 int main ()
 {
+ 	clock_t c1=clock();
+
         ReadInput();
         OdeSolve(X0, Xf, Y0, H);
+
+	c1 = clock() - c1; 
+  	cout << "execution time is " << c1/(double)CLOCKS_PER_SEC << " seconds" << endl;
 
    return 0;
 }
