@@ -93,6 +93,9 @@ main (void)
   //double t = 0.0, t1 = 10.0;
   //double y[4] = { 0.0, 0.0, 20.0, 0.0 };
 
+	ofstream outputfile;
+        outputfile.open("output");
+
   for (i = 1; i <= h; i++)
     {
       double ti = i * t1 / h;
@@ -100,11 +103,13 @@ main (void)
 
       if (status != GSL_SUCCESS)
         {
-          printf ("error, return value=%d\n", status);
+	  outputfile << "error, return value = " << status << endl;
+          //printf ("error, return value=%d\n", status);
           break;
         }
 
-      printf ("%.5e %.5e %.5e %.5e %.5e\n", t, y[0], y[1], y[2], y[3]);
+      outputfile << t << y[0] << y[1] << y[2] << y[3] << endl;
+      //printf ("%.5e %.5e %.5e %.5e %.5e\n", t, y[0], y[1], y[2], y[3]);
     }
 
   gsl_odeiv2_driver_free (d);
