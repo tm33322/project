@@ -14,7 +14,7 @@ void ReadInput()
         double r, R[8];
         int i=0;
 
-        ifstream infile("input");
+        ifstream infile("inputxy");
 
         while (infile >> r)
         {
@@ -94,7 +94,7 @@ void Compute ()
   //double y[4] = { 0.0, 0.0, 20.0, 0.0 };
 
 	ofstream outputfile;
-        outputfile.open("output");
+        outputfile.open("outputxy");
 
   for (i = 1; i <= h; i++)
     {
@@ -108,9 +108,11 @@ void Compute ()
           break;
         }
 
-      outputfile << t << y[0] << y[1] << y[2] << y[3] << endl;
+      outputfile << t << " " << y[0] << " " << y[1] << " " << y[2] << " " << y[3] << endl;
       //printf ("%.5e %.5e %.5e %.5e %.5e\n", t, y[0], y[1], y[2], y[3]);
     }
+
+  outputfile.close();
 
   gsl_odeiv2_driver_free (d);
 
