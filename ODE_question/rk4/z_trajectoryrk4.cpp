@@ -2,6 +2,38 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_odeiv2.h>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+double mode, t, t1, h, y[2];
+
+void ReadInput()
+{
+        double r, R[8];
+        int i=0;
+
+        ifstream infile("inputz");
+
+        while (infile >> r)
+        {
+                R[i]=r;
+                i++;
+                //cout << r << endl;
+        }
+
+        mode=R[0];
+        t=R[1];
+        t1=R[2];
+        h=R[3];
+	y[0]=R[4];
+	y[1]=R[5];
+
+
+//cout << "mode = " << mode << " t = " << t << " t1 = " << t1 << " h = " << h << " y0 = " << y[0] << " y1 = " << y[1] << endl;
+}
+
 
 int
 func (double t, const double y[], double f[],
@@ -32,8 +64,8 @@ jac (double t, const double y[], double *dfdy,
   return GSL_SUCCESS;
 }
 
-int
-main (void)
+
+void Compute()
 {
   double tau = 5;
   gsl_odeiv2_system sys = {func, jac, 2, &tau};
@@ -42,23 +74,41 @@ main (void)
     gsl_odeiv2_driver_alloc_y_new (&sys, gsl_odeiv2_step_rk4,
                                   1e-6, 1e-6, 0.0);
   int i;
-  double t = 0.0, t1 = 10.0;
-  double y[2] = { 0.0, 2.0 };
+  //double t = 0.0, t1 = 10.0;
+  //double y[2] = { 0.0, 2.0 };
 
-  for (i = 1; i <= 100; i++)
+	ofstream outputfile;
+	outputfile.open("outputz");
+
+
+  for (i = 1; i <= h; i++)
     {
-      double ti = i * t1 / 100.0;
+      double ti = i * t1 / h;
       int status = gsl_odeiv2_driver_apply (d, &t, ti, y);
 
       if (status != GSL_SUCCESS)
         {
-          printf ("error, return value=%d\n", status);
+	  outputfile << "error, return value = " << status << endl;
+          //printf ("error, return value=%d\n", status);
           break;
         }
 
-      printf ("%.5e %.5e %.5e\n", t, y[0], y[1]);
+      outputfile << t << " " << y[0] << " " << y[1] << endl;
+      //printf ("%.5e %.5e %.5e\n", t, y[0], y[1]);
     }
 
+  outputfile.close();
+
   gsl_odeiv2_driver_free (d);
+ 
+}
+
+
+int
+main (void)
+{
+  ReadInput();
+  Compute();
+  
   return 0;
 }
