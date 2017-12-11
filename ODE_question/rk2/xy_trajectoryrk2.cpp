@@ -11,7 +11,7 @@ double mode, t, t1, h, y[4];
 
 void ReadInput()
 {
-        double r, R[7];
+        double r, R[8];
         int i=0;
 
         ifstream infile("input");
