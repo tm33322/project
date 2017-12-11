@@ -27,8 +27,8 @@ void ReadInput()
         t=R[1];
         t1=R[2];
         h=R[3];
-        y[0]=R[4];
-        y[1]=R[5];
+	y[0]=R[4];
+	y[1]=R[5];
 
 
 //cout << "mode = " << mode << " t = " << t << " t1 = " << t1 << " h = " << h << " y0 = " << y[0] << " y1 = " << y[1] << endl;
@@ -77,8 +77,8 @@ void Compute()
   //double t = 0.0, t1 = 10.0;
   //double y[2] = { 0.0, 2.0 };
 
-        ofstream outputfile;
-        outputfile.open("outputz");
+	ofstream outputfile;
+	outputfile.open("outputz");
 
 
   for (i = 1; i <= h; i++)
@@ -88,7 +88,7 @@ void Compute()
 
       if (status != GSL_SUCCESS)
         {
-          outputfile << "error, return value = " << status << endl;
+	  outputfile << "error, return value = " << status << endl;
           //printf ("error, return value=%d\n", status);
           break;
         }
@@ -100,7 +100,7 @@ void Compute()
   outputfile.close();
 
   gsl_odeiv2_driver_free (d);
-
+ 
 }
 
 
@@ -109,6 +109,6 @@ main (void)
 {
   ReadInput();
   Compute();
-
+  
   return 0;
 }

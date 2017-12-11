@@ -7,33 +7,36 @@
 #include <iomanip>
 using namespace std;
 
-double mode, t, t1, h, y[4];
+double mode, t, t1, h, y[4], order;
 
 void ReadInput()
 {
-        double r, R[8];
-        int i=0;
+	double r, R[8];
+	int i=0;
 
-        ifstream infile("inputxy");
+	ifstream infile("inputxy");
 
-        while (infile >> r)
-        {
-                R[i]=r;
-                i++;
-        }
+	while (infile >> r)
+	{
+		R[i]=r;
+		i++;
+		//cout << r << endl;
+	}
 
-        mode=R[0];
-        t=R[1];
-        t1=R[2];
+	mode=R[0];
+	t=R[1];
+	t1=R[2];
 	h=R[3];
 
-        for (i=0; i<=3; i++)
-        {
-                y[i]=R[i+4];
-                //cout << "y" << i << " = " << y[i] << endl;
-        }
+	for (i=0; i<=3; i++)
+	{
+		y[i]=R[i+4];
+		//cout << "y" << i << " = " << y[i] << endl;
+	}
+
 //cout << "mode = " << mode << " t = " << t << " t1 = " << t1 << " h = " << h << " y0 = " << y[0] << " y1 = " << y[1] << " y2 = " << y[2] << " y3 = " << y[3] << endl;
 }
+
 
 int
 func (double t, const double y[], double f[],
@@ -81,20 +84,22 @@ jac (double t, const double y[], double *dfdy,
   return GSL_SUCCESS;
 }
 
-
-void Compute ()
+void Compute()
 {
   gsl_odeiv2_system sys = {func, jac, 4, NULL};
+
+  char RK;
 
   gsl_odeiv2_driver * d =
     gsl_odeiv2_driver_alloc_y_new (&sys, gsl_odeiv2_step_rk2,
                                   1e-6, 1e-6, 0.0);
+
   int i;
   //double t = 0.0, t1 = 10.0;
   //double y[4] = { 0.0, 0.0, 20.0, 0.0 };
 
 	ofstream outputfile;
-        outputfile.open("outputxy");
+	outputfile.open("outputxy");
 
   for (i = 1; i <= h; i++)
     {
@@ -110,16 +115,18 @@ void Compute ()
 
       outputfile << t << " " << y[0] << " " << y[1] << " " << y[2] << " " << y[3] << endl;
       //printf ("%.5e %.5e %.5e %.5e %.5e\n", t, y[0], y[1], y[2], y[3]);
+ 
     }
-
-  outputfile.close();
 
   gsl_odeiv2_driver_free (d);
 
 }
 
-int main()
+
+int
+main ()
 {
+
   ReadInput();
   Compute();
 
