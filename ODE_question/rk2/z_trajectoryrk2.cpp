@@ -8,9 +8,17 @@
 using namespace std;
 
 double mode, t, t1, h, y[2];
+ofstream outdebugfile;
 
 void ReadInput()
 {
+        if (mode=1)
+        {   
+        outdebugfile.open ("outdebugz");
+        outdebugfile << "entering ReadInput" << endl;
+        }   
+
+
         double r, R[8];
         int i=0;
 
@@ -31,7 +39,7 @@ void ReadInput()
 	y[1]=R[5];
 
 
-//cout << "mode = " << mode << " t = " << t << " t1 = " << t1 << " h = " << h << " y0 = " << y[0] << " y1 = " << y[1] << endl;
+outdebugfile << "mode = " << mode << " t = " << t << " t1 = " << t1 << " h = " << h << " y0 = " << y[0] << " y1 = " << y[1] << endl;
 }
 
 
@@ -39,43 +47,41 @@ int
 func (double t, const double y[], double f[],
       void *params)
 {
+  if (mode=1)
+  {
+        outdebugfile << "entering func" << endl;
+  }
+
   (void)(t); /* avoid unused parameter warning */
   double tau = *(double *)params;
   f[0] = y[1];
   f[1] = -y[1]/tau;
+
+  if (mode=1)
+  {
+        outdebugfile << "func success is " << GSL_SUCCESS << endl;
+  }
+
   return GSL_SUCCESS;
 }
 
-int
-jac (double t, const double y[], double *dfdy,
-     double dfdt[], void *params)
-{
-  (void)(t); /* avoid unused parameter warning */
-  double tau = *(double *)params;
-  gsl_matrix_view dfdy_mat
-    = gsl_matrix_view_array (dfdy, 2, 2);
-  gsl_matrix * m = &dfdy_mat.matrix;
-  gsl_matrix_set (m, 0, 0, 0.0);
-  gsl_matrix_set (m, 0, 1, 1.0);
-  gsl_matrix_set (m, 1, 0, 0.0);
-  gsl_matrix_set (m, 1, 1, -1/tau);
-  dfdt[0] = 0.0;
-  dfdt[1] = 0.0;
-  return GSL_SUCCESS;
-}
+int * jac;
 
 
 void Compute()
 {
+   if (mode=1)
+  {
+        outdebugfile << "entering Compute" << endl;
+  }
+
   double tau = 5;
-  gsl_odeiv2_system sys = {func, jac, 2, &tau};
+  gsl_odeiv2_system sys = {func, NULL, 2, &tau};
 
   gsl_odeiv2_driver * d =
     gsl_odeiv2_driver_alloc_y_new (&sys, gsl_odeiv2_step_rk2,
                                   1e-6, 1e-6, 0.0);
   int i;
-  //double t = 0.0, t1 = 10.0;
-  //double y[2] = { 0.0, 2.0 };
 
 	ofstream outputfile;
 	outputfile.open("outputz");
@@ -89,17 +95,25 @@ void Compute()
       if (status != GSL_SUCCESS)
         {
 	  outputfile << "error, return value = " << status << endl;
-          //printf ("error, return value=%d\n", status);
+          if (mode=1)
+          {
+                outdebugfile << "error, return value = " << status << endl;
+          }
           break;
         }
 
       outputfile << t << " " << y[0] << " " << y[1] << endl;
-      //printf ("%.5e %.5e %.5e\n", t, y[0], y[1]);
     }
 
   outputfile.close();
 
   gsl_odeiv2_driver_free (d);
+
+  if (mode=1)
+  {
+        outdebugfile << "closing" <<endl;
+        outdebugfile.close();
+  }
  
 }
 
